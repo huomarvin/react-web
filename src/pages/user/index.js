@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Card, Button, Table, Form, Select, Modal, DatePicker, message } from 'antd'
-import PropTypes from 'prop-types';
-import Utils from '../../utils/utils'
+import { Card, Button, Table, Form, Select, Modal, DatePicker, message } from 'antd';
+import request from '@src/request';
 import BaseForm from '../../components/BaseForm'
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -45,6 +44,11 @@ class User extends Component {
     }
     requestList = () => {
         let _this = this;
+        request.getUserList().then(res => {
+            this.setState({
+                list: res.value.data
+            });
+        })
         // axios.ajax({
         //     url: '/order/list',
         //     data: {
@@ -80,11 +84,11 @@ class User extends Component {
             },
             {
                 title: '用户名',
-                dataIndex: 'userName'
+                dataIndex: 'name'
             },
             {
                 title: '手机号',
-                dataIndex: 'mobile'
+                dataIndex: 'phone'
             },
             {
                 title: '邮箱',
@@ -92,11 +96,14 @@ class User extends Component {
             },
             {
                 title: '状态',
-                dataIndex: 'status'
+                dataIndex: 'status',
+                render: (text) => {
+                    return text === 1 ? '正常' : '禁用';
+                }
             },
             {
                 title: '上次登录时间',
-                dataIndex: 'last_time'
+                dataIndex: 'lastLoginTime'
             }
         ]
         const formItemLayout = {

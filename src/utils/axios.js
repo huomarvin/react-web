@@ -3,16 +3,18 @@ import { Modal } from 'antd';
 
 export default class Axios {
     static ajax(options) {
+        console.log('options', options);
         let loading;
         if (options.data && options.data.isShowLoading !== false) {
             loading = document.getElementById('ajaxLoading');
             loading.style.display = 'block';
         }
-        const baseApi = '/api';
+        const baseApi = options.baseURL || '/';
+        console.log('baseApi', baseApi);
         return new Promise((resolve, reject) => {
             axios({
                 url: options.url,
-                method: 'get',
+                method: 'get' || options.method,
                 baseURL: baseApi,
                 timeout: 5000,
                 params: (options.data && options.data.params) || ''
@@ -21,9 +23,9 @@ export default class Axios {
                     loading = document.getElementById('ajaxLoading');
                     loading.style.display = 'none';
                 }
-                if (response.status === '200') {
+                if (response.status === 200) {
                     const res = response.data;
-                    if (res.code === '0') {
+                    if (res.success) {
                         resolve(res);
                     } else {
                         Modal.info({
@@ -34,7 +36,9 @@ export default class Axios {
                 } else {
                     reject(response.data);
                 }
-            });
+            })
+        }).catch(error => {
+            console.error('error', error);
         });
     }
 }

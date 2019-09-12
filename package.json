@@ -6,6 +6,9 @@
     "scripts": {
         "server": "webpack-dev-server",
         "start": "cross-env development=true node src/server/server.js",
+        "dev": "npm-run-all --parallel dev:**",
+        "dev:web": "cross-env development=true node src/server/server.js",
+        "dev:server": "node backend/index.js",
         "fix": "eslint --fix src"
     },
     "keywords": [],
@@ -33,6 +36,7 @@
         "koa-webpack-hot-middleware": "^1.0.3",
         "less": "^3.10.3",
         "less-loader": "^5.0.0",
+        "npm-run-all": "^4.1.5",
         "postcss-loader": "^3.0.0",
         "prettier": "^1.18.2",
         "style-loader": "^1.0.0",
