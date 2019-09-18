@@ -8,7 +8,7 @@ export default class Buttons extends React.Component {
         message.info('Hi,您选择了页签：' + key);
     };
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const panes = [
             {
                 title: 'Tab 1',

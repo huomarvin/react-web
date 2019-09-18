@@ -24,7 +24,7 @@ class NavLeft extends React.Component {
         });
         // hashHistory.push(key);
     };
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const menuTreeNode = this.renderMenu(MenuConfig);
 
         this.setState({
@@ -60,7 +60,7 @@ class NavLeft extends React.Component {
             <div>
                 <NavLink to="/home" onClick={this.homeHandleClick}>
                     <div className="logo">
-                        <img src="/assets/logo-ant.svg" alt="" />
+                        <img src="/assets/logo.png" alt="" />
                         <h1>后台管理系统</h1>
                     </div>
                 </NavLink>

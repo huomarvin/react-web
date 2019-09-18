@@ -12,13 +12,21 @@ export default class Axios {
         const baseApi = options.baseURL || '/';
         console.log('baseApi', baseApi);
         return new Promise((resolve, reject) => {
-            axios({
+            let reqBody = {
                 url: options.url,
-                method: 'get' || options.method,
+                method: options.method || 'get',
                 baseURL: baseApi,
                 timeout: 5000,
-                params: (options.data && options.data.params) || ''
-            }).then(response => {
+            };
+            if (reqBody.method === 'get') {
+                reqBody.params = (options.data && options.data.params) || '';
+            } else {
+                reqBody.data = (options.data && options.data.params) || {};
+                reqBody.headers = {
+                    'Content-Type': 'application/json'
+                };
+            }
+            axios(reqBody).then(response => {
                 if (options.data && options.data.isShowLoading !== false) {
                     loading = document.getElementById('ajaxLoading');
                     loading.style.display = 'none';

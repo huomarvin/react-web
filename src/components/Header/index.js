@@ -4,7 +4,7 @@ import './index.less';
 import { connect } from 'react-redux';
 class Header extends React.Component {
     state = {};
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.setState({
             userName: 'Bernie'
         });
@@ -17,7 +17,7 @@ class Header extends React.Component {
                 <Row className="header-top">
                     {menuType ? (
                         <Col span={6} className="logo">
-                            <img src="/assets/logo-ant.svg" alt="" />
+                            <img src="/assets/logo.png" alt="" />
                             <span>IMooc 通用管理系统</span>
                         </Col>
                     ) : (

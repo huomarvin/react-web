@@ -17,6 +17,10 @@ module.exports = (router, rest) => {
             router.del(item, (ctx, next) => {
                 ctx.body = rest[item](ctx.params.id)
             })
+        } else if (item.startsWith('/update')) {
+            router.put(item, (ctx, next) => {
+                ctx.body = rest[item](ctx.params.id, ctx.request.body)
+            })
         }
     });
 };

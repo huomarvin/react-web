@@ -13,24 +13,47 @@ for (let i = 1; i <= 100; i++) {
 }
 module.exports = {
     "/getUserList": (data) => {
-        console.log('rest', data);
-        let { pageSize = 10, pageNumber = 1 } = data;
+        let { pageSize = 10, pageNumber = 1, name } = data;
         pageSize = parseInt(pageSize);
         pageNumber = parseInt(pageNumber);
+        let filterList = userList;
+        if (name) {
+            filterList = filterList.filter(item => item.name === name);
+        }
         return {
             success: true,
             value: {
                 pageSize,
                 pageNumber,
-                total: userList.length,
-                data: userList.slice((pageNumber - 1) * pageSize, pageNumber * pageSize)
+                total: filterList.length,
+                data: filterList.slice((pageNumber - 1) * pageSize, pageNumber * pageSize)
             }
         };
     },
-    "/addUser": (data) => {
-        userList.push({ ...data, id: userList.length + 1 });
+    "/addUser": (param) => {
+        console.log('param', param)
+        let data = { ...param, id: userList.length + 1 };
+        userList.push(data);
         return {
-            success: true
+            success: true,
+            data
+        }
+    },
+    "/updateUser/:id": (id, param) => {
+        let data = {};
+        for (let i = 0; i < userList.length; i++) {
+            if (userList[i].id === parseInt(id)) {
+                len = i;
+                data = { ...userList[i], ...param };
+                break;
+            }
+        }
+        if (len != -1) {
+            userList.splice(len, 1, data);
+        }
+        return {
+            success: len != -1,
+            data
         }
     },
     "/deleteUser/:id": (id) => {
