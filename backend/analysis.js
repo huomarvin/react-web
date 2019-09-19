@@ -6,20 +6,20 @@ module.exports = (router, rest) => {
     Object.keys(rest).map(item => {
         console.log('item', item);
         if (item.startsWith('/get')) {
-            router.get(item, (ctx, next) => {
-                ctx.body = rest[item]({ ...ctx.request.query })
+            router.get(item, async (ctx, next) => {
+                ctx.body = await rest[item]({ ...ctx.request.query })
             })
         } else if (item.startsWith('/add') || item.startsWith('/save')) {
-            router.post(item, (ctx, next) => {
-                ctx.body = rest[item]({ ...ctx.request.body })
+            router.post(item, async (ctx, next) => {
+                ctx.body = await rest[item]({ ...ctx.request.body })
             })
         } else if (item.startsWith('/delete')) {
-            router.del(item, (ctx, next) => {
-                ctx.body = rest[item](ctx.params.id)
+            router.del(item, async (ctx, next) => {
+                ctx.body = await rest[item](ctx.params.id)
             })
         } else if (item.startsWith('/update')) {
-            router.put(item, (ctx, next) => {
-                ctx.body = rest[item](ctx.params.id, ctx.request.body)
+            router.put(item, async (ctx, next) => {
+                ctx.body = await rest[item](ctx.params.id, ctx.request.body)
             })
         }
     });

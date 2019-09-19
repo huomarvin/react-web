@@ -1,81 +1,43 @@
-const faker = require('faker');
-let userList = [];
-for (let i = 1; i <= 100; i++) {
-    userList.push({
-        id: i,
-        name: faker.name.firstName(),
-        phone: faker.phone.phoneNumber(),
-        address: faker.address.streetAddress(),
-        email: faker.internet.email(),
-        lastLoginTime: faker.date.past(),
-        status: faker.random.number({ min: 1, max: 2 })
-    });
-}
+const { createUser, getUserList, updateUser, deleteUser } = require('./db/dao');
+
 module.exports = {
-    "/getUserList": (data) => {
+    "/getUserList": async (data) => {
         let { pageSize = 10, pageNumber = 1, name } = data;
         pageSize = parseInt(pageSize);
         pageNumber = parseInt(pageNumber);
-        let filterList = userList;
-        if (name) {
-            filterList = filterList.filter(item => item.name === name);
-        }
+        let customers = await getUserList({
+            name,
+            offset: (pageNumber - 1) * pageSize,
+            limit: pageSize
+        });
         return {
             success: true,
             value: {
                 pageSize,
                 pageNumber,
-                total: filterList.length,
-                data: filterList.slice((pageNumber - 1) * pageSize, pageNumber * pageSize)
+                total: customers.count || customers.counts,
+                data: customers.rows
             }
         };
     },
-    "/addUser": (param) => {
-        console.log('param', param)
-        let data = { ...param, id: userList.length + 1 };
-        userList.push(data);
+    "/addUser": async (param) => {
+        await createUser(param);
+        return {
+            success: true,
+        }
+    },
+    "/updateUser/:id": async (id, param) => {
+        let data = await updateUser(id, param);
         return {
             success: true,
             data
         }
     },
-    "/updateUser/:id": (id, param) => {
-        let data = {};
-        for (let i = 0; i < userList.length; i++) {
-            if (userList[i].id === parseInt(id)) {
-                len = i;
-                data = { ...userList[i], ...param };
-                break;
-            }
-        }
-        if (len != -1) {
-            userList.splice(len, 1, data);
-        }
+    "/deleteUser/:id": async (id) => {
+        let data = await deleteUser(id);
         return {
-            success: len != -1,
+            success: !!data,
             data
-        }
-    },
-    "/deleteUser/:id": (id) => {
-        let len = -1;
-        let data = {};
-        for (let i = 0; i < userList.length; i++) {
-            if (userList[i].id === parseInt(id)) {
-                len = i;
-                break;
-            }
-        }
-        if (len != -1) {
-            data = userList.splice(len, 1);
-        }
-        return {
-            success: true,
-            data
-        }
-    },
-    "/getUserInfo": {
-        "data": {
-            name: faker.name.firstName()
         }
     }
 }

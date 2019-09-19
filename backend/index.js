@@ -5,7 +5,9 @@ const rest = require('./rest');
 const analysis = require('./analysis');
 const app = new Koa();
 const router = new Router();
+const initDb = require('./db');
 
+initDb();
 app.use(bodyParser());
 app.use(async (ctx, next) => {
     ctx.set('Access-Control-Allow-Origin', '*');
@@ -14,6 +16,19 @@ app.use(async (ctx, next) => {
     ctx.set('Access-Control-Request-Headers', 'Origin, X-Requested-With, content-Type, Accept, Authorization');
     await next();
 });
+
+// 统一封装dao层抛出异常
+app.use(async (ctx, next) => {
+    try {
+        await next();
+    } catch (ex) {
+        ctx.body = {
+            success: false,
+            msg: ex.message
+        }
+    }
+})
+
 analysis(router, rest);
 
 app.use(router.routes()).use(router.allowedMethods());
