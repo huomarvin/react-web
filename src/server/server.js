@@ -5,6 +5,7 @@ const convert = require('koa-convert');
 const path = require('path');
 const session = require('koa-generic-session');
 const redisStore = require('koa-redis');
+const open = require('open');
 const webpackConfig = require('../../webpack.config.js');
 const config = require('../../config');
 const app = new Koa();
@@ -33,4 +34,5 @@ if (process.env.development) {
 
 app.listen(config.port, () => {
     console.log(`${config.port}端口监听成功`);
+    open(`${config.localhost}:${config.port}`)
 });

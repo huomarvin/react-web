@@ -3,10 +3,9 @@ const Router = require('koa-router');
 const bodyParser = require('koa-bodyparser');
 const rest = require('./rest');
 const analysis = require('./analysis');
+const initDb = require('./db');
 const app = new Koa();
 const router = new Router();
-const initDb = require('./db');
-
 initDb();
 app.use(bodyParser());
 app.use(async (ctx, next) => {

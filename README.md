@@ -11,6 +11,11 @@ react
 react-router-dom
 react-redux
 koa
-docker
+### docker
+```shell
+docker run --name mysql -p 3306:3306 -v /tmp/mysql:/var/lib/mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=true -d mysql:5.7
+```
 redis
 mysql
+
+

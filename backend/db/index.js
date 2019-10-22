@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 const config = require('../config');
-const { User, generateUser } = require('./models');
+const generate = require('./models');
 
 const init = () => {
     const sequelize = new Sequelize(config.databaseName, config.userName, config.password, {
@@ -17,8 +17,7 @@ const init = () => {
     sequelize.authenticate()
         .then(() => {
             console.log('Connection has been established successfully.');
-            generateUser(sequelize);
-            User.sync();
+            generate(sequelize);
             // for (let i = 0; i < 100; i++) {
             //     User.create({ name: `John${i}`, email: `John${i}@qq.com` }).then(res => {
             //     });

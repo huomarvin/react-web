@@ -2,6 +2,7 @@ const darkTheme = require('@ant-design/dark-theme');
 
 module.exports = {
     port: 3000,
+    localhost: '127.0.0.1',
     theme: darkTheme.default,
     public: 'public',
     consoleColor: {
